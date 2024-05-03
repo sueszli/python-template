@@ -1,28 +1,14 @@
 {
         "recommendations": [
                 "ms-python.black-formatter",
+                "esbenp.prettier-vscode",
+                "ms-python.isort",
+                
                 "shahilkumar.docxreader",
                 "grapecity.gc-excelviewer",
-                "ms-python.isort",
-                "esbenp.prettier-vscode",
+                "mechatroner.rainbow-csv",
+                
                 "ms-python.vscode-pylance",
                 "ms-python.python",
-                "ms-python.debugpy",
-                "donjayamanne.python-environment-manager",
-                "donjayamanne.python-extension-pack",
-                "tomoki1207.pdf",
-                "tamasfe.even-better-toml",
-                "ms-toolsai.jupyter",
-                "ms-toolsai.jupyter-keymap",
-                "ms-toolsai.jupyter-renderers",
-                "ms-toolsai.vscode-jupyter-slideshow",
-                "torn4dom4n.latex-support",
-                "james-yu.latex-workshop",
-                "ms-vscode.live-server",
-                "reditorsupport.r",
-                "rdebugger.r-debugger",
-                "ikuyadeu.r-pack",
-                "mikhail-arkhipov.r",
-                "mechatroner.rainbow-csv"
         ]
 }
