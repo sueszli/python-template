@@ -1,5 +1,3 @@
-# i want: pytorch, jupyter notebook via port 8888 localhost
-
 FROM ubuntu:latest
 
 # get system dependencies
