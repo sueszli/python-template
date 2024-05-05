@@ -1,15 +1,9 @@
 services:
     main:
-        container_name: project-template
+        container_name: new-project
 
         # use dockerfile to enable caching
         build: .
-
-        # mount the current directory into the container
-        user: root
-        working_dir: /workspace
-        volumes:
-            - .:/workspace
 
         # pytorch multiprocessing support
         # for gpu access see: https://docs.docker.com/compose/gpu-support/
