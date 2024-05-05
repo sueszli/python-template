@@ -17,5 +17,9 @@ services:
         tty: true
         ipc: host
 
-        # stay alive to exec into the container
-        # command: tail -f /dev/null
+        # expose ports
+        ports:
+            - '8888:8888'
+
+        # keep alive so we can exec into the container
+        command: tail -f /dev/null
