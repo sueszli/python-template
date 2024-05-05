@@ -9,8 +9,8 @@ RUN apk add --no-cache \
     python3 pipx
 
 # python packages -> cuda-torch can only be installed on linux
-RUN pip install numpy pandas matplotlib seaborn
-RUN pip install torch torchvision torchaudio
+# RUN pip install numpy pandas matplotlib seaborn
+# RUN pip install torch torchvision torchaudio
 
 # mount the current directory to the container, set as working directory
 VOLUME ["/code"]
