@@ -9,7 +9,7 @@ python3 python3-pip
 
 # install python dependencies
 RUN pip install --no-cache-dir numpy pandas --break-system-packages
-RUN pip install --no-cache-dir torch torchvision torchaudio --break-system-packages
+# RUN pip install --no-cache-dir torch torchvision torchaudio --break-system-packages
 
 # make jupyterlab accessible from localhost:8888
 # RUN pip install --no-cache-dir jupyter jupyterlab jupyter_contrib_nbextensions --break-system-packages
