@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+    service:
+        container_name: project-template
+        build:
+            context: .
+            dockerfile: .devcontainer/Dockerfile
+        volumes:
+            # - ..:/workspaces:cached
+            - ..:/code
+
+        # overrides default command so things don't shut down after the process ends.
+        command: /bin/sh -c "while sleep 1000; do :; done"

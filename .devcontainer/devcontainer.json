@@ -1,33 +1,19 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
 {
-    "name": "Alpine",
-    // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "mcr.microsoft.com/devcontainers/base:alpine-3.19",
-    "customizations": {
-        "vscode": {
-            "extensions": ["esbenp.prettier-vscode", "ms-python.black-formatter", "ms-azuretools.vscode-docker", "ms-vscode-remote.remote-containers"],
+    "name": "Existing Docker Compose (Extend)",
 
-            // type checking
-            "python.analysis.typeCheckingMode": "basic",
+    // Update the 'dockerComposeFile' list if you have more compose files or use different names.
+    // The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+    "dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
 
-            // formatters
-            "[python]": {
-                "editor.defaultFormatter": "ms-python.black-formatter"
-            },
-            "editor.defaultFormatter": "esbenp.prettier-vscode",
-            "editor.formatOnSave": true,
+    // The 'service' property is the name of the service for the container that VS Code should
+    // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+    "service": "service",
 
-            // consistent tab width
-            "prettier.tabWidth": 4,
-            "editor.tabSize": 4,
-            "notebook.editorOptionsCustomizations": {
-                "editor.tabSize": 4,
-                "editor.indentSize": 4,
-                "editor.insertSpaces": true
-            }
-        }
-    },
+    // The optional 'workspaceFolder' property is the path VS Code should open by default when
+    // connected. This is typically a file mount in .devcontainer/docker-compose.yml
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
@@ -35,12 +21,18 @@
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [],
 
-    // Use 'postCreateCommand' to run commands after the container is created.
-    // "postCreateCommand": "uname -a",
+    // Uncomment the next line if you want start specific services in your Docker Compose config.
+    // "runServices": [],
+
+    // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+    // "shutdownAction": "none",
+
+    // Uncomment the next line to run commands after the container is created.
+    // "postCreateCommand": "cat /etc/os-release",
 
     // Configure tool-specific properties.
     // "customizations": {},
 
-    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-    "remoteUser": "root"
+    // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "devcontainer"
 }
