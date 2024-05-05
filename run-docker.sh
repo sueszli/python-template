@@ -1,15 +1,22 @@
-# run
+# ------------------------------------------- run
 docker-compose up
 
-# use however you like
+# ------------------------------------------- use however you like
 docker ps --all
 code --attach-container <container_id>
 docker exec -it <container_id> /bin/bash
 
-# stop
+# ------------------------------------------- stop
 docker-compose down
 
+# clean up
 ids=$(docker ps -a -q)
 for id in $ids; do docker stop $id; done
 for id in $ids; do docker rm $id; done
 docker ps --all
+
+docker rmi $(docker images -q)
+docker images
+
+echo y | docker system prune
+docker system df
