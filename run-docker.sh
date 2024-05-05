@@ -8,14 +8,19 @@ docker exec -it <container_id> /bin/bash
 # ------------------------------------------- stop, clean up
 docker-compose down
 
-ids=$(docker ps -a -q)
-for id in $ids; do docker stop $id; done
-for id in $ids; do docker rm $id; done
-docker ps --all
-
-# ------------------------------------------- remove everything
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
-docker images
 
-echo y | docker system prune
+yes | docker container prune
+yes | docker image prune
+yes | docker volume prune
+yes | docker network prune
+yes | docker system prune
+
+# ------------------------------------------- check
+docker ps --all
+docker images
 docker system df
+docker volume ls
+docker network ls

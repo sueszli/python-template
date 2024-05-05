@@ -2,48 +2,20 @@ services:
     main:
         container_name: project-template
 
-        image: ubuntu:latest
+        # use dockerfile to enable caching
+        build: .
 
-        # mount the current directory to the container
-        working_dir: /root/code/
+        # mount the current directory into the container
+        user: root
+        working_dir: /workspace
         volumes:
-            - .:/root/code/
-
-        # map ports for jupyter notebook
-        ports:
-            - '8000:8000'
+            - .:/workspace
 
         # pytorch multiprocessing support
+        # for gpu access see: https://docs.docker.com/compose/gpu-support/
         stdin_open: true
         tty: true
         ipc: host
 
-        # pytorch gpu support based on: https://docs.docker.com/compose/gpu-support/
-        # runtime: nvidia
-        # deploy:
-        #     resources:
-        #         reservations:
-        #             devices:
-        #                 - driver: nvidia
-        #                   count: all
-        #                   capabilities: [gpu]
-
-        command:
-            - /bin/bash
-            - -c
-            - |
-                apt-get install -y git wget
-
-# #!/bin/bash
-
-# apt-get update
-# apt-get install -y git wget curl unzip python3-pip
-
-# pip install --upgrade pip
-# pip install --no-cache-dir numpy
-# # pip install --no-cache-dir numpy pandas jupyter jupyterlab
-
-# jupyter lab --ip=0.0.0.0 --port=8888 --allow-root --no-browser
-
-# # stay alive so we can exec into the container
-# while true; do sleep 30; done
+        # stay alive to exec into the container
+        # command: tail -f /dev/null
