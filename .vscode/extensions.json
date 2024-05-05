@@ -1,14 +1,3 @@
 {
-        "recommendations": [
-                "ms-python.black-formatter",
-                "esbenp.prettier-vscode",
-                "ms-python.isort",
-                
-                "shahilkumar.docxreader",
-                "grapecity.gc-excelviewer",
-                "mechatroner.rainbow-csv",
-                
-                "ms-python.vscode-pylance",
-                "ms-python.python",
-        ]
+    "recommendations": ["esbenp.prettier-vscode", "ms-python.black-formatter", "ms-azuretools.vscode-docker", "ms-vscode-remote.remote-containers"]
 }
