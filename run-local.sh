@@ -3,13 +3,13 @@ if ! command -v pip &> /dev/null; then echo "pip missing"; exit 1; fi
 
 python3 -m pip install --upgrade pip
 
-# formatter
+# install formatter
 pip install black > /dev/null
 
-# update requirements
+# dev: find out requirements
 rm -rf requirements.txt
 pip install pipreqs
 pipreqs .
 
-# install requirements
+# prod: install requirements
 pip install -r requirements.txt

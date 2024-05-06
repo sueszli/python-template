@@ -2,7 +2,8 @@ services:
     main:
         container_name: new-project
 
-        # use dockerfile to enable caching
+        # build with dockerfile
+        # do as little as possible in this file to enable caching
         build: .
 
         # pytorch multiprocessing support
@@ -11,9 +12,6 @@ services:
         tty: true
         ipc: host
 
-        # expose ports
+        # map container ports to host ports
         ports:
             - '8888:8888'
-
-        # keep alive so we can exec into the container
-        command: tail -f /dev/null

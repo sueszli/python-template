@@ -1,3 +1,11 @@
 {
-    "recommendations": ["esbenp.prettier-vscode", "ms-python.black-formatter", "ms-azuretools.vscode-docker", "ms-vscode-remote.remote-containers"]
+    "recommendations": [
+        // formatters
+        "esbenp.prettier-vscode",
+        "ms-python.black-formatter",
+
+        // docker
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers"
+    ]
 }

@@ -2,7 +2,8 @@
 docker-compose up
 
 # ------------------------------------------- use however you like
-code --attach-container <container_id>
+docker ps --all
+docker-compose exec <service_name> <command>
 docker exec -it <container_id> /bin/bash
 
 # ------------------------------------------- stop, clean up
