@@ -1,2 +1,21 @@
+[project]
+name = "new-project"
+description = "project description"
+version = "0.0.1"
+authors = [
+    { name = "sueszli" }
+]
+requires-python = ">=3.10, <3.12"
+dependencies = [
+    "torch",
+    "tensorflow",
+    "scikit-learn",
+    "transformers",
+
+    "pandas",
+    "polars",
+    "numpy",
+]
+
 [tool.black]
 line-length = 200
