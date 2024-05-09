@@ -5,6 +5,7 @@ docker-compose up
 docker ps --all
 docker-compose exec <service_name> <command>
 docker exec -it <container_id> /bin/bash
+open http://localhost:8888/
 
 # ------------------------------------------- stop, clean up
 docker-compose down
