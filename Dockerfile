@@ -9,14 +9,15 @@ WORKDIR /workspace
 VOLUME [ "/workspace" ]
 
 # install python dependencies
-RUN pip install --no-cache-dir numpy pandas --break-system-packages
-RUN pip install --no-cache-dir torch torchvision torchaudio --break-system-packages
+RUN pip install --no-cache-dir --break-system-packages \
+  numpy pandas \
+  torch torchvision torchaudio
 
 # stay alive so we can exec into the container
 CMD ["tail", "-f", "/dev/null"]
 
 # alternatively: run jupyter notebook server
-# RUN pip install --no-cache-dir jupyter jupyterlab jupyter_contrib_nbextensions --break-system-packages
+# RUN pip install --no-cache-dir --break-system-packages jupyter jupyterlab jupyter_contrib_nbextensions
 # ENV JUPYTER_ENABLE_LAB=yes
 # CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--no-browser", "--allow-root", "--ServerApp.token=''", "--ServerApp.password=''", "--ServerApp.allow_origin='*'", "--ServerApp.disable_check_xsrf=True"]
 # EXPOSE 8888
