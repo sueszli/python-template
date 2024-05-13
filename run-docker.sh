@@ -4,7 +4,7 @@ docker-compose up
 # ------------------------------------------- use however you like
 docker ps --all
 docker exec -it example-project /bin/bash
-open http://localhost:8888/
+open http://localhost:8888/lab
 
 # ------------------------------------------- stop, clean up
 docker-compose down
