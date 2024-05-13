@@ -3,18 +3,18 @@ services:
         container_name: new-project
         build: .
 
-        # config for pytorch IPC
-        # for gpu access see: https://docs.docker.com/compose/gpu-support/
-        stdin_open: true
-        tty: true
-        ipc: host
-
         # mount volume
         volumes:
             - type: bind
               source: .
               target: /workspace
         working_dir: /workspace
+
+        # config for pytorch IPC
+        # for gpu access see: https://docs.docker.com/compose/gpu-support/
+        stdin_open: true
+        tty: true
+        ipc: host
 
         # map ports to host
         ports:
