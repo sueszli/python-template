@@ -1,14 +1,7 @@
 FROM ubuntu:latest
 
-# get system dependencies
 RUN apt-get update && apt-get install -y git python3 python3-pip
 
-# mount workspace
-COPY . /workspace
-WORKDIR /workspace
-VOLUME [ "/workspace" ]
-
-# install python dependencies
 RUN pip install --no-cache-dir --break-system-packages \
     numpy pandas \
     torch torchvision torchaudio
