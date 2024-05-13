@@ -1,17 +1,21 @@
 services:
     main:
         container_name: new-project
-
-        # build with dockerfile
-        # do as little as possible in this file to enable caching
         build: .
 
-        # pytorch multiprocessing support
+        # config for pytorch IPC
         # for gpu access see: https://docs.docker.com/compose/gpu-support/
         stdin_open: true
         tty: true
         ipc: host
 
-        # map container ports to host ports
+        # mount volume
+        volumes:
+            - type: bind
+              source: .
+              target: /workspace
+        working_dir: /workspace
+
+        # map ports to host
         ports:
             - '8888:8888'
