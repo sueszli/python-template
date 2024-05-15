@@ -6,6 +6,7 @@ conda init zsh
 conda init bash
 exit # restart shell
 
+conda config --set auto_activate_base false # disable auto-activation
 conda config --env --set subdir osx-64 # emulate x86_64
 
 # ------------------------------------------- start
