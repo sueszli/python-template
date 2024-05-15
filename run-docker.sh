@@ -18,7 +18,6 @@ yes | docker volume prune
 yes | docker network prune
 yes | docker system prune
 
-# ------------------------------------------- verify cleanup
 docker ps --all
 docker images
 docker system df
