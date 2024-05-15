@@ -1,11 +1,11 @@
-# ------------------------------------------- start
+# ----------------------------------------------------------------------------- start
 docker-compose up
 
 docker ps --all
 docker exec -it example-project /bin/bash
 open http://localhost:8888/lab
 
-# ------------------------------------------- stop
+# ----------------------------------------------------------------------------- stop
 docker-compose down
 
 docker stop $(docker ps -a -q)
