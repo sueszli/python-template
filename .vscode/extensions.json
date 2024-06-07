@@ -1,7 +1,6 @@
 {
     "recommendations": [
         // formatters
-        "esbenp.prettier-vscode",
         "ms-python.black-formatter",
 
         // docker
