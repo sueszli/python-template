@@ -2,7 +2,7 @@
 docker-compose up
 
 docker ps --all
-docker exec -it example-project /bin/bash
+docker exec -it main /bin/bash
 open http://localhost:8888/lab
 
 # ----------------------------------------------------------------------------- stop
