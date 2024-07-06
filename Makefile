@@ -20,7 +20,7 @@ fmt:
 
 	# format
 	pip install ruff
-	ruff format --config line-length=500 .	
+	ruff format --config line-length=500 .
 
 sec:
 	pip install bandit
