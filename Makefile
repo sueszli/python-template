@@ -30,7 +30,6 @@ sec:
 	safety check --full-report
 
 up:
-	clear
 	git pull
 	git add .
 	git commit -m "up"
