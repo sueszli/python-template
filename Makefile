@@ -31,10 +31,9 @@ reqs:
 conda-run:
 	conda config --set auto_activate_base false
 	conda activate base
-	
+
 	conda create --yes --name main python=3.11 anaconda
 	conda activate main
-
 	pip install -r requirements.txt
 
 	conda env export > conda-environment.yml
