@@ -1,8 +1,9 @@
-.PHONY: help fmt up reqs conda-run conda-clean docker-run docker-clean
+.PHONY: help fmt sec up reqs conda-run conda-clean docker-run docker-clean
 
 help:
 	@printf "Usage: make [target]\n"
-	@printf "\tfmt - run black formatter\n"
+	@printf "\tfmt - run formatter\n"
+	@printf "\tsec - run security checks\n"
 	@printf "\tup - git pull, add, commit, push\n"
 	@printf "\treqs - generate requirements.txt\n"
 	@printf "\tconda-run - create conda environment\n"
@@ -11,8 +12,22 @@ help:
 	@printf "\tdocker-clean - remove docker container\n"
 
 fmt:
-	pip install black
-	black -l 200 .
+	# sort and remove unused imports
+	pip install isort
+	isort .
+	pip install autoflake
+	autoflake --remove-all-unused-imports --recursive --in-place .
+
+	# format
+	pip install ruff
+	ruff format --config line-length=500 .	
+
+sec:
+	pip install bandit
+	pip install safety
+	
+	bandit -r .
+	safety check --full-report
 
 up:
 	git pull
@@ -25,10 +40,12 @@ reqs:
 	rm -rf requirements.txt
 	pipreqs .
 
-# to emulate x86_64 run: conda config --env --set subdir osx-64
-# to emulate arm64 run: conda config --env --set subdir osx-arm64
-# check with: conda info
 conda-run:
+	# to emulate x86_64 run: conda config --env --set subdir osx-64
+	# to emulate arm64 run: conda config --env --set subdir osx-arm64
+	# check with: conda info
+
+	conda deactivate
 	conda config --set auto_activate_base false
 	conda activate base
 
@@ -36,6 +53,7 @@ conda-run:
 	conda activate main
 	pip install -r requirements.txt
 
+	# take snapshot
 	conda env export > conda-environment.yml
 
 conda-clean:
@@ -51,6 +69,7 @@ docker-run:
 docker-clean:
 	docker-compose down
 
+	# wipe docker
 	docker stop $(docker ps -a -q)
 	docker rm $(docker ps -a -q)
 	docker rmi $(docker images -q)
@@ -59,6 +78,8 @@ docker-clean:
 	yes | docker volume prune
 	yes | docker network prune
 	yes | docker system prune
+	
+	# check if successful
 	docker ps --all
 	docker images
 	docker system df
