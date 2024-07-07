@@ -1,5 +1,39 @@
-# Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,vim,emacs,visualstudiocode,jetbrains+all,latex,r,python
-# Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,vim,emacs,visualstudiocode,jetbrains+all,latex,r,python
+# Created by https://www.toptal.com/developers/gitignore/api/r,vim,emacs,latex,linux,macos,python,windows,jetbrains+all,visualstudiocode,c++
+# Edit at https://www.toptal.com/developers/gitignore?templates=r,vim,emacs,latex,linux,macos,python,windows,jetbrains+all,visualstudiocode,c++
+
+### C++ ###
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -147,7 +181,6 @@ fabric.properties
 *.log
 *.lot
 *.fls
-*.out
 *.toc
 *.fmt
 *.fot
@@ -255,7 +288,6 @@ acs-*.bib
 *.lzo
 *.lzs
 *.slg
-*.slo
 *.sls
 
 # uncomment this for glossaries-extra (will ignore makeindex's style files!)
@@ -504,7 +536,6 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
 
 # Distribution / packaging
 .Python
@@ -710,7 +741,7 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-# docs/
+docs/
 
 # translation temp files
 po/*~
@@ -787,4 +818,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,windows,linux,vim,emacs,visualstudiocode,jetbrains+all,latex,r,python
+# End of https://www.toptal.com/developers/gitignore/api/r,vim,emacs,latex,linux,macos,python,windows,jetbrains+all,visualstudiocode,c++
