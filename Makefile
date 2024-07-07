@@ -2,6 +2,8 @@
 
 help:
 	@printf "Usage: make [target]\n"
+	@printf "Targets:\n"
+	@printf "\thelp - show this help message\n"
 	@printf "\tfmt - run formatter\n"
 	@printf "\tsec - run security checks\n"
 	@printf "\tup - git pull, add, commit, push\n"
