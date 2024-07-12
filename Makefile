@@ -81,15 +81,15 @@ conda-install:
 
 	conda env export --name con > conda-environment.yml
 
-	@echo "To activate the conda environment, run: `conda activate con`"
-	@echo "To deactivate the conda environment, run: `conda deactivate`"
+	@echo "To activate the conda environment, run: 'conda activate con'"
+	@echo "To deactivate the conda environment, run: 'conda deactivate'"
 
 conda-install-yml:
 	$(CONDA_ACTIVATE_BASE)
 	conda env create --file conda-environment.yml
 
-	@echo "To activate the conda environment, run: `conda activate con`"
-	@echo "To deactivate the conda environment, run: `conda deactivate`"
+	@echo "To activate the conda environment, run: 'conda activate con'"
+	@echo "To deactivate the conda environment, run: 'conda deactivate'"
 
 conda-clean:
 	conda remove --yes --name con --all
