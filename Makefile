@@ -1,17 +1,10 @@
-.PHONY: help up fmt sec reqs conda-run conda-clean docker-run docker-clean
+.PHONY: help fmt sec reqs conda-run conda-clean docker-run docker-clean
 
 help:
 	@printf "Usage: make [target]\n"
 	@printf "Targets:\n"
 	@printf "\thelp - show this help message\n"
 	@printf "\t...\n"
-
-# commit
-up:
-	git pull
-	git add .
-	git commit -m "up"
-	git push
 
 # format code, remove unused imports, sort imports
 fmt:
