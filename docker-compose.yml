@@ -11,7 +11,8 @@ services:
         working_dir: /workspace
 
         # config for pytorch IPC
-        # for gpu access see: https://docs.docker.com/compose/gpu-support/
+        # see: https://docs.docker.com/compose/gpu-support/
+        # see: https://github.com/NVIDIA/nvidia-container-toolkit?tab=readme-ov-file
         stdin_open: true
         tty: true
         ipc: host
