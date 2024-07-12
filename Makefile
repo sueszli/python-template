@@ -1,18 +1,19 @@
-.PHONY: help fmt sec up reqs conda-run conda-clean docker-run docker-clean
+.PHONY: help up fmt sec reqs conda-run conda-clean docker-run docker-clean
 
 help:
 	@printf "Usage: make [target]\n"
 	@printf "Targets:\n"
 	@printf "\thelp - show this help message\n"
-	@printf "\tfmt - run formatter\n"
-	@printf "\tsec - run security checks\n"
-	@printf "\tup - git pull, add, commit, push\n"
-	@printf "\treqs - generate requirements.txt\n"
-	@printf "\tconda-run - create conda environment\n"
-	@printf "\tconda-clean - remove conda environment\n"
-	@printf "\tdocker-run - run docker container\n"
-	@printf "\tdocker-clean - remove docker container\n"
+	@printf "\t...\n"
 
+# commit
+up:
+	git pull
+	git add .
+	git commit -m "up"
+	git push
+
+# format code, remove unused imports, sort imports
 fmt:
 	# sort and remove unused imports
 	pip install isort
@@ -24,6 +25,7 @@ fmt:
 	pip install ruff
 	ruff format --config line-length=500 .
 
+# check for security vulnerabilities
 sec:
 	pip install bandit
 	pip install safety
@@ -31,21 +33,16 @@ sec:
 	bandit -r .
 	safety check --full-report
 
-up:
-	git pull
-	git add .
-	git commit -m "up"
-	git push
-
+# update requirements.txt
 reqs:
 	pip install pipreqs
 	rm -rf requirements.txt
 	pipreqs .
 
 conda-run:
-	# to emulate x86_64 run: conda config --env --set subdir osx-64
-	# to emulate arm64 run: conda config --env --set subdir osx-arm64
-	# check with: conda info
+	# conda config --env --set subdir osx-64 # emulate x86_64
+	# conda config --env --set subdir osx-arm64 # emulate arm64
+	conda info
 
 	conda deactivate
 	conda config --set auto_activate_base false
