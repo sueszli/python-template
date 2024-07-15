@@ -10,7 +10,7 @@ fmt:
 	pip install ruff
 	ruff format --config line-length=500 .
 
-.PHONY: sec # check code for common vulnerabilities
+.PHONY: sec # check for common vulnerabilities
 sec:
 	pip install bandit
 	pip install safety
@@ -24,9 +24,16 @@ reqs:
 	rm -rf requirements.txt
 	pipreqs .
 
+.PHONY: up # pull remote changes and push local changes
+up:
+	git pull
+	git add .
+	git commit -m "up"
+	git push
+
 # --------------------------------------------------------------- docker
 
-.PHONY: docker-run # exec into docker environment
+.PHONY: docker-run # exec into docker container
 docker-run:
 	docker-compose up
 	docker ps --all
@@ -62,7 +69,7 @@ CONDA_DEACTIVATE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda d
 CONDA_ACTIVATE_BASE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate base
 CONDA_ACTIVATE_CON = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate con
 
-.PHONY: conda-snapshot # generate yaml file based for conda environment
+.PHONY: conda-snapshot # generate conda yaml file
 conda-snapshot:
 	# conda config --env --set subdir osx-64
 	# conda config --env --set subdir osx-arm64
@@ -95,6 +102,6 @@ conda-clean:
 
 # --------------------------------------------------------------- help
 
-.PHONY: help # generate list of targets with descriptions
+.PHONY: help # generate help message
 help:
 	@grep '^.PHONY: .* #' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
