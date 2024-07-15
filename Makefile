@@ -33,8 +33,8 @@ up:
 
 # --------------------------------------------------------------- docker
 
-.PHONY: docker-run # exec into docker container
-docker-run:
+.PHONY: docker-install # exec into docker container
+docker-install:
 	docker-compose up
 	docker ps --all
 	docker exec -it main /bin/bash
