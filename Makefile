@@ -1,24 +1,16 @@
-.PHONY: help fmt sec reqs docker-run docker-clean conda-install conda-install-yml conda-clean
-
-help:
-	@printf "Usage: make [target]\n"
-	@printf "Targets:\n"
-	@printf "\thelp - show this help message\n"
-	@printf "\t...\n"
-
 # --------------------------------------------------------------- utils
 
+.PHONY: fmt # format and remove unused imports
 fmt:
-	# sort and remove unused imports
 	pip install isort
 	isort .
 	pip install autoflake
 	autoflake --remove-all-unused-imports --recursive --in-place .
 
-	# format
 	pip install ruff
 	ruff format --config line-length=500 .
 
+.PHONY: sec # check code for common vulnerabilities
 sec:
 	pip install bandit
 	pip install safety
@@ -26,6 +18,7 @@ sec:
 	bandit -r .
 	safety check --full-report
 
+.PHONY: reqs # generate requirements.txt file
 reqs:
 	pip install pipreqs
 	rm -rf requirements.txt
@@ -33,11 +26,13 @@ reqs:
 
 # --------------------------------------------------------------- docker
 
+.PHONY: docker-run # exec into docker environment
 docker-run:
 	docker-compose up
 	docker ps --all
 	docker exec -it main /bin/bash
 
+.PHONY: docker-clean # wipe everything in docker
 docker-clean:
 	docker-compose down
 
@@ -60,14 +55,15 @@ docker-clean:
 
 # --------------------------------------------------------------- conda
 
-# workaround because makefile opens up its own shell for each command
+# workaround because makefile executes each line of the recipe in a separate sub-shell
 .ONESHELL:
 SHELL = /bin/bash
 CONDA_DEACTIVATE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda deactivate
 CONDA_ACTIVATE_BASE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate base
 CONDA_ACTIVATE_CON = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate con
 
-conda-install:
+.PHONY: conda-snapshot # generate yaml file based for conda environment
+conda-snapshot:
 	# conda config --env --set subdir osx-64
 	# conda config --env --set subdir osx-arm64
 	conda config --set auto_activate_base false
@@ -81,16 +77,24 @@ conda-install:
 
 	conda env export --name con > conda-environment.yml
 
-	@echo "To activate the conda environment, run: 'conda activate con'"
-	@echo "To deactivate the conda environment, run: 'conda deactivate'"
+	$(CONDA_DEACTIVATE)
+	conda remove --yes --name con --all
 
-conda-install-yml:
+.PHONY: conda-install # install conda environment from yaml file
+conda-install:
 	$(CONDA_ACTIVATE_BASE)
 	conda env create --file conda-environment.yml
 
-	@echo "To activate the conda environment, run: 'conda activate con'"
-	@echo "To deactivate the conda environment, run: 'conda deactivate'"
+	@echo "to activate the conda environment, run: 'conda activate con'"
+	@echo "to deactivate the conda environment, run: 'conda deactivate'"
 
+.PHONY: conda-clean # remove conda environment
 conda-clean:
 	conda remove --yes --name con --all
 	conda env list
+
+# --------------------------------------------------------------- help
+
+.PHONY: help # generate list of targets with descriptions
+help:
+	@grep '^.PHONY: .* #' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
