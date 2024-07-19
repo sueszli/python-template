@@ -37,16 +37,16 @@ up:
 docker-install:
 	docker-compose up
 	docker ps --all
-	docker exec -it main /bin/bash
+	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
 
 .PHONY: docker-clean # wipe everything in docker
 docker-clean:
 	docker-compose down
 
 	# wipe docker
-	docker stop $(docker ps -a -q)
-	docker rm $(docker ps -a -q)
-	docker rmi $(docker images -q)
+	-docker stop $$(docker ps -a -q)
+	-docker rm $$(docker ps -a -q)
+	-docker rmi $$(docker images -q)
 	yes | docker container prune
 	yes | docker image prune
 	yes | docker volume prune
