@@ -33,11 +33,10 @@ up:
 
 # --------------------------------------------------------------- docker
 
-.PHONY: docker-install # exec into docker container
+.PHONY: docker-install # run docker container
 docker-install:
-	docker-compose up
-	docker ps --all
 	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
+	docker-compose up --detach
 
 .PHONY: docker-clean # wipe everything in docker
 docker-clean:
