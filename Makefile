@@ -33,6 +33,7 @@ up:
 
 # --------------------------------------------------------------- docker
 
+# also see: https://github.com/IDEA-Research/Grounded-Segment-Anything/blob/main/Makefile
 .PHONY: docker-install # run docker container
 docker-install:
 	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
