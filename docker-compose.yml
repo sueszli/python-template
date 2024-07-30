@@ -3,20 +3,24 @@ services:
         container_name: main
         build: .
 
-        # mount volume
         volumes:
             - type: bind
               source: .
               target: /workspace
         working_dir: /workspace
 
+        # for mac arm chips see:
+        # - https://docs.docker.com/desktop/troubleshoot/known-issues/
+        # - https://github.com/IDEA-Research/Grounded-Segment-Anything/blob/main/Makefile
+        
+        # for nvidia gpus see:
+        # - https://github.com/NVIDIA/nvidia-container-toolkit?tab=readme-ov-file
+        # - https://docs.docker.com/compose/gpu-support/
+        
         # config for pytorch IPC
-        # see: https://docs.docker.com/compose/gpu-support/
-        # see: https://github.com/NVIDIA/nvidia-container-toolkit?tab=readme-ov-file
         stdin_open: true
         tty: true
         ipc: host
 
-        # map ports to host
         ports:
             - '8888:8888'
