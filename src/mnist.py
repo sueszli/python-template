@@ -10,6 +10,18 @@ from torch.optim.lr_scheduler import StepLR
 from torchvision import datasets, transforms
 
 
+def get_device() -> torch.device:
+    device_arg = "cpu"
+    if torch.cuda.is_available():
+        device_arg = "cuda"
+        print("CUDA device detected")
+    elif torch.backends.mps.is_available():
+        device_arg = "mps"
+        print("MPS device detected")
+    device = torch.device(device_arg)
+    return device
+
+
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -71,7 +83,7 @@ def main():
     parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
     parser.add_argument("--batch-size", type=int, default=64, metavar="N", help="input batch size for training (default: 64)")
     parser.add_argument("--test-batch-size", type=int, default=1000, metavar="N", help="input batch size for testing (default: 1000)")
-    parser.add_argument("--epochs", type=int, default=14, metavar="N", help="number of epochs to train (default: 14)")
+    parser.add_argument("--epochs", type=int, default=2, metavar="N", help="number of epochs to train (default: 2 for demo purposes)")
     parser.add_argument("--lr", type=float, default=1.0, metavar="LR", help="learning rate (default: 1.0)")
     parser.add_argument("--gamma", type=float, default=0.7, metavar="M", help="Learning rate step gamma (default: 0.7)")
     parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
@@ -80,24 +92,15 @@ def main():
 
     torch.manual_seed(args.seed)
 
-    # check architecture
-    device_arg = "cpu"
-    if torch.cuda.is_available():
-        device_arg = "cuda"
-        print("CUDA device is available")
-    elif torch.backends.mps.is_available():
-        device_arg = "mps"
-        print("MPS device is is available")
-    device = torch.device(device_arg)
-
     kwargs = {"num_workers": 1, "pin_memory": True}
-    train_loader = torch.utils.data.DataLoader(  # type: ignore
+    train_loader = torch.utils.data.DataLoader(
         datasets.MNIST("./data", train=True, download=True, transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])), batch_size=args.batch_size, shuffle=True, **kwargs
     )
-    test_loader = torch.utils.data.DataLoader(  # type: ignore
+    test_loader = torch.utils.data.DataLoader(
         datasets.MNIST("./data", train=False, transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])), batch_size=args.test_batch_size, shuffle=True, **kwargs
     )
 
+    device = get_device()
     model = Net().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
@@ -106,9 +109,6 @@ def main():
         train(args, model, device, train_loader, optimizer, epoch)
         test(args, model, device, test_loader)
         scheduler.step()
-
-    if args.save_model:
-        torch.save(model.state_dict(), "mnist_cnn.pt")
 
 
 if __name__ == "__main__":
