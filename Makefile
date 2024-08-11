@@ -35,7 +35,6 @@ conda-get-yaml:
 	# conda config --env --set subdir osx-arm64
 	conda config --set auto_activate_base false
 	conda info
-
 	@bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda create --yes --name con python=3.11; \
