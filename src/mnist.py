@@ -16,6 +16,9 @@ def get_device() -> torch.device:
         device_arg = "mps"
         print("MPS device detected")
 
+        macos_version = torch.backends.mps.is_macos13_or_newer()
+        print(f"macOS 13 or newer: {macos_version}")
+
     elif torch.cuda.is_available():
         device_arg = "cuda"
         print("CUDA device detected")
@@ -25,20 +28,20 @@ def get_device() -> torch.device:
 
         for i in range(gpu_count):
             torch.cuda.set_device(i)
-            
+
             props = torch.cuda.get_device_properties(i)
-            
+
             print(f"\nGPU {i}:")
             print(f"  Name: {props.name}")
             print(f"  Compute Capability: {props.major}.{props.minor}")
             print(f"  Total Memory: {props.total_memory / 1024**3:.2f} GB")
             print(f"  Multi-Processor Count: {props.multi_processor_count}")
-            
+
             memory_allocated = torch.cuda.memory_allocated(i) / 1024**2
             memory_reserved = torch.cuda.memory_reserved(i) / 1024**2
             print(f"  Memory Allocated: {memory_allocated:.2f} MB")
             print(f"  Memory Reserved: {memory_reserved:.2f} MB")
-            
+
             utilization = torch.cuda.utilization(i)
             print(f"  GPU Utilization: {utilization}%")
 
@@ -111,18 +114,14 @@ def main():
     parser.add_argument("--lr", type=float, default=1.0, metavar="LR", help="learning rate (default: 1.0)")
     parser.add_argument("--gamma", type=float, default=0.7, metavar="M", help="Learning rate step gamma (default: 0.7)")
     parser.add_argument("--seed", type=int, default=1, metavar="S", help="random seed (default: 1)")
-    parser.add_argument("--log-interval", type=int, default=10, metavar="N", help="how many batches to wait before logging training status")
+    parser.add_argument("--log-interval", type=int, default=25, metavar="N", help="how many batches to wait before logging training status")
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
 
     kwargs = {"num_workers": 1, "pin_memory": True}
-    train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST("./data", train=True, download=True, transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])), batch_size=args.batch_size, shuffle=True, **kwargs
-    )
-    test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST("./data", train=False, transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])), batch_size=args.test_batch_size, shuffle=True, **kwargs
-    )
+    train_loader = torch.utils.data.DataLoader(datasets.MNIST("./data", train=True, download=True, transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])), batch_size=args.batch_size, shuffle=True, **kwargs)
+    test_loader = torch.utils.data.DataLoader(datasets.MNIST("./data", train=False, transform=transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])), batch_size=args.test_batch_size, shuffle=True, **kwargs)
 
     device = get_device()
     model = Net().to(device)
