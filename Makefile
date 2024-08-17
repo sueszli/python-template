@@ -1,30 +1,18 @@
-# --------------------------------------------------------------- docker
+# --------------------------------------------------------------- venv
 
-.PHONY: docker-install # run docker container
-docker-install:
-	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
-	docker-compose up --detach
+.PHONY: venv-install # install venv environment
+venv-install:
+	python -m venv venv;
+	@bash -c '\
+		source venv/bin/activate; \
+		pip install --upgrade pip; \
+		pip install -r requirements.txt; \
+	'
+	@echo "\n\n# To activate this environment, use\n#\n#     $ source venv/bin/activate\n#\n# To deactivate an active environment, use\n#\n#     $ deactivate"
 
-.PHONY: docker-clean # wipe everything in docker
-docker-clean:
-	docker-compose down
-
-	# wipe docker
-	-docker stop $$(docker ps -a -q)
-	-docker rm $$(docker ps -a -q)
-	-docker rmi $$(docker images -q)
-	yes | docker container prune
-	yes | docker image prune
-	yes | docker volume prune
-	yes | docker network prune
-	yes | docker system prune
-	
-	# check if successful
-	docker ps --all
-	docker images
-	docker system df
-	docker volume ls
-	docker network ls
+.PHONY: venv-clean # remove venv environment
+venv-clean:
+	rm -rf venv
 
 # --------------------------------------------------------------- conda
 
@@ -56,22 +44,51 @@ conda-install:
 
 .PHONY: conda-clean # remove conda environment
 conda-clean:
+	# conda clean --all
 	@bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda remove --yes --name con --all; \
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
 	'
 
+# --------------------------------------------------------------- docker
+
+.PHONY: docker-install # run docker container
+docker-install:
+	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
+	docker-compose up --detach
+
+.PHONY: docker-clean # wipe everything in docker
+docker-clean:
+	docker-compose down
+
+	# wipe docker
+	-docker stop $$(docker ps -a -q)
+	-docker rm $$(docker ps -a -q)
+	-docker rmi $$(docker images -q)
+	yes | docker container prune
+	yes | docker image prune
+	yes | docker volume prune
+	yes | docker network prune
+	yes | docker system prune
+	
+	# check if successful
+	docker ps --all
+	docker images
+	docker system df
+	docker volume ls
+	docker network ls
+
 # --------------------------------------------------------------- utils
 
 .PHONY: fmt # format and remove unused imports
 fmt:
-	pip install isort
-	isort .
-	pip install autoflake
-	autoflake --remove-all-unused-imports --recursive --in-place .
+	# pip install isort
+	# pip install ruff
+	# pip install autoflake
 
-	pip install ruff
+	isort .
+	autoflake --remove-all-unused-imports --recursive --in-place .
 	ruff format --config line-length=500 .
 
 .PHONY: sec # check for common vulnerabilities
@@ -86,7 +103,7 @@ sec:
 reqs:
 	pip install pipreqs
 	rm -rf requirements.txt
-	pipreqs .
+	pipreqs . --mode no-pin
 
 .PHONY: up # pull remote changes and push local changes
 up:
