@@ -1,6 +1,6 @@
 # --------------------------------------------------------------- venv
 
-.PHONY: init # initialize virtual environment
+.PHONY: init # initialize venv
 init:
 	# init venv
 	pip install uv
