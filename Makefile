@@ -25,7 +25,7 @@ lock:
 
 # --------------------------------------------------------------- conda
 
-.PHONY: conda-get-yaml # generate an environment yaml file
+.PHONY: conda-get-yaml # generate an environment yaml file (idempotent)
 conda-get-yaml:
 	conda update -n base -c defaults conda
 	# conda config --env --set subdir osx-64
