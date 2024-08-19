@@ -25,7 +25,7 @@ lock:
 
 # --------------------------------------------------------------- conda
 
-.PHONY: conda-get-yaml # generate an environment yaml file (idempotent)
+.PHONY: conda-get-yaml # convert requirements.txt to env.yaml file (idempotent)
 conda-get-yaml:
 	conda update -n base -c defaults conda
 	# conda config --env --set subdir osx-64
@@ -39,19 +39,19 @@ conda-get-yaml:
 		\
 		pip install -r requirements.txt; \
 		\
-		conda env export --no-builds | grep -v "prefix:" > conda-environment.yml; \
+		conda env export --no-builds | grep -v "prefix:" > env.yml; \
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
 		conda remove --yes --name con --all; \
 	'
 
-.PHONY: conda-install # install conda environment from yaml file
+.PHONY: conda-install # install conda from env.yaml file
 conda-install:
 	@bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
-		conda env create --file conda-environment.yml; \
+		conda env create --file env.yml; \
 	'
 
-.PHONY: conda-clean # remove conda environment
+.PHONY: conda-clean # wipe conda environment
 conda-clean:
 	# conda clean --all
 	@bash -c '\
