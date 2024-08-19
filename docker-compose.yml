@@ -1,7 +1,7 @@
 services:
     main:
         container_name: main
-        build: .
+        build: ./dockerfile
 
         volumes:
             - type: bind
