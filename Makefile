@@ -1,3 +1,5 @@
+# add lockfile at some point using: https://github.com/sueszli/blog/blob/main/2024-08-19%20reproducible%20python.md
+
 # --------------------------------------------------------------- venv
 
 .PHONY: venv-install # install venv environment
