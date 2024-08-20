@@ -9,6 +9,7 @@ init:
 
 	# install reqs
 	rm -rf requirements.txt requirements.in
+	uv pip install pipreqs
 	pipreqs . --mode no-pin --encoding latin-1
 	mv requirements.txt requirements.in
 
