@@ -4,9 +4,6 @@
 
 .PHONY: init # initialize venv
 init:
-	rm -rf .venv
-	python3 -m venv .venv
-
 	# get requirements.in
 	pip install pip --upgrade
 	pip install pipreqs
@@ -18,18 +15,15 @@ init:
 	pip install pip-tools
 	pip-compile requirements.in -o requirements.txt
 	
-	# install in venv
+	# install everything in venv
+	rm -rf .venv
+	python3 -m venv .venv
 	@bash -c "source .venv/bin/activate && pip install -r requirements.txt"
-	
-	# cleanup
-	rm -rf requirements.txt requirements.in
 
 .PHONY: lock # freeze pip and lock reqs
 lock:
-	rm -rf requirements.txt requirements.in
 	@bash -c "source .venv/bin/activate && pip freeze > requirements.in"
 	pip-compile requirements.in -o requirements.txt
-	rm -rf requirements.txt
 
 # --------------------------------------------------------------- conda
 
