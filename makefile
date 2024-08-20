@@ -1,26 +1,35 @@
 # --------------------------------------------------------------- venv
 
+# check out: https://github.com/astral-sh/uv
+
 .PHONY: init # initialize venv
 init:
-	# init venv
-	pip install uv
 	rm -rf .venv
-	uv venv
+	python3 -m venv .venv
 
-	# install reqs
+	# get requirements.in
+	pip install pip --upgrade
+	pip install pipreqs
 	rm -rf requirements.txt requirements.in
-	uv pip install pipreqs
 	pipreqs . --mode no-pin --encoding latin-1
 	mv requirements.txt requirements.in
 
-	uv pip compile requirements.in -o requirements.txt
-	uv pip install -r requirements.txt
-
+	# get requirements.txt
+	pip install pip-tools
+	pip-compile requirements.in -o requirements.txt
+	
+	# install in venv
+	@bash -c "source .venv/bin/activate && pip install -r requirements.txt"
+	
+	# cleanup
 	rm -rf requirements.txt requirements.in
 
 .PHONY: lock # freeze pip and lock reqs
 lock:
-	uv pip freeze | uv pip compile - -o requirements.txt
+	rm -rf requirements.txt requirements.in
+	@bash -c "source .venv/bin/activate && pip freeze > requirements.in"
+	pip-compile requirements.in -o requirements.txt
+	rm -rf requirements.txt
 
 # --------------------------------------------------------------- conda
 
