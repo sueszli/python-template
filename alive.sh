@@ -1,10 +1,12 @@
-python_file="$PWD/src/mnist.py"
+python_file="$PWD/0-mining/scrape_pages.py"
 
-# stay alive
+# run script, stay alive
 monitor() {
     while true; do
         if ! pgrep -f "$python_file" > /dev/null; then
             echo "$(date): process died, restarting..." >> alive-monitor.log
+            rm -rf "alive.log"
+            rm -rf "alive.pid"
             python3 "$python_file" >> "alive.log" 2>&1 &
             echo $! > "alive.pid"
         fi
