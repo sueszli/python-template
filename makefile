@@ -99,8 +99,6 @@ monitor:
 					./.venv/bin/python3 "$(filepath)" > "monitor-process.log" 2>&1 & \
 					echo $$! > "monitor-process.pid"; \
 					echo "$$(date): started process with PID $$(cat monitor-process.pid)" >> monitor.log; \
-				else \
-					echo "$$(date): process is running" >> monitor.log; \
 				fi; \
 				sleep 5; \
 			done; \
