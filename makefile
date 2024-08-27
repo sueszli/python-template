@@ -1,7 +1,5 @@
 # --------------------------------------------------------------- venv
 
-# check out: https://github.com/astral-sh/uv
-
 .PHONY: init # initialize venv
 init:
 	# get requirements.in
@@ -93,9 +91,8 @@ docker-clean:
 .PHONY: monitor # create nohup with restart on failure
 monitor:
 	@if [ "$(filepath)" = "" ]; then echo "missing 'filepath' argument"; exit 1; fi
-	
-	# @runtime="./.venv/bin/python3";
 
+	# @runtime="./.venv/bin/python3";
 	@runtime="python3"; \
 	monitor() { \
 		while true; do \
