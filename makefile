@@ -121,7 +121,6 @@ monitor-kill:
 	rm -rf monitor-process.pid
 	rm -rf monitor-process.log
 
-
 # --------------------------------------------------------------- utils
 
 .PHONY: fmt # format codebase
