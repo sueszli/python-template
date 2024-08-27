@@ -1,4 +1,4 @@
-python_file="$PWD/0-mining/scrape_pages.py"
+python_file="$PWD/src/mnist.py"
 
 # run script, stay alive
 monitor() {
