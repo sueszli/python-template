@@ -5,6 +5,9 @@ init:
 	# get requirements.in
 	pip install pip --upgrade
 	pip install pipreqs
+	pip install Cython
+	pip install wheels
+	pip install setuptools
 	rm -rf requirements.txt requirements.in
 	pipreqs . --mode no-pin --encoding utf-8
 	mv requirements.txt requirements.in
