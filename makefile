@@ -6,7 +6,7 @@ init:
 	pip install pip --upgrade
 	pip install pipreqs
 	rm -rf requirements.txt requirements.in
-	pipreqs . --mode no-pin --ignore --encoding latin-1
+	pipreqs . --mode no-pin --encoding utf-8
 	mv requirements.txt requirements.in
 
 	# get requirements.txt
