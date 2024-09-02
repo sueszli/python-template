@@ -103,6 +103,10 @@ docker-install:
 	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
 	docker-compose up --detach
 
+.PHONY: docker-build # save changes to container
+docker-install:
+	docker-compose build
+
 .PHONY: docker-clean # wipe everything in docker
 docker-clean:
 	docker-compose down
