@@ -90,7 +90,7 @@ conda-clean:
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
 	'
 
-# --------------------------------------------------------------- nohup
+# --------------------------------------------------------------- utils
 
 .PHONY: monitor # create nohup with restart on failure
 monitor:
