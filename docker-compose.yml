@@ -21,7 +21,7 @@ services:
             # jupyter server via http://localhost:8888/lab
             # RUN pip install jupyter jupyterlab jupyter_contrib_nbextensions
             # ENV JUPYTER_ENABLE_LAB=yes
-            # EXPOSE 8888 8888
+            # EXPOSE 8888
 
             # CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--no-browser", "--ServerApp.token=''", "--ServerApp.password=''", "--ServerApp.allow_origin='*'", "--ServerApp.disable_check_xsrf=True", "--ServerApp.allow_root=True", "--ServerApp.open_browser=False"]
             CMD ["tail", "-f", "/dev/null"]
