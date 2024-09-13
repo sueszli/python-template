@@ -27,12 +27,12 @@ lock:
 
 .PHONY: docker-install # run docker container
 docker-install:
-	@echo "to exec into docker container, run: 'docker exec -it main /bin/bash'"
 	docker-compose up --detach
+	@echo "to exec into docker container, run: docker exec -it main bash"
 
 .PHONY: docker-build # save changes to container
 docker-build:
-	docker-compose build --parallel
+	docker-compose build
 
 .PHONY: docker-clean # wipe everything in docker
 docker-clean:
