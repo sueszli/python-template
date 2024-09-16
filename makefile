@@ -16,11 +16,11 @@ init:
 	# install everything in venv
 	rm -rf .venv
 	python3 -m venv .venv
-	@bash -c "source .venv/bin/activate && pip install -r requirements.txt"
+	bash -c "source .venv/bin/activate && pip install -r requirements.txt"
 
 .PHONY: lock # freeze pip and lock reqs
 lock:
-	@bash -c "source .venv/bin/activate && pip freeze > requirements.in"
+	bash -c "source .venv/bin/activate && pip freeze > requirements.in"
 	pip-compile requirements.in -o requirements.txt -vvv
 
 # --------------------------------------------------------------- docker
@@ -28,7 +28,7 @@ lock:
 .PHONY: docker-install # run docker container
 docker-install:
 	docker-compose up --detach
-	@echo "to exec into docker container, run: docker exec -it main bash"
+	echo "to exec into docker container, run: docker exec -it main bash"
 
 .PHONY: docker-build # save changes to container
 docker-build:
@@ -62,7 +62,7 @@ conda-get-yaml:
 	# conda config --env --set subdir osx-arm64
 	conda config --set auto_activate_base false
 	conda info
-	@bash -c '\
+	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda create --yes --name con python=3.11; \
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate con; \
@@ -76,7 +76,7 @@ conda-get-yaml:
 
 .PHONY: conda-install # install conda from env.yaml file
 conda-install:
-	@bash -c '\
+	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda env create --file env.yml; \
 	'
@@ -84,7 +84,7 @@ conda-install:
 .PHONY: conda-clean # wipe conda environment
 conda-clean:
 	# conda clean --all
-	@bash -c '\
+	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda remove --yes --name con --all; \
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
@@ -94,8 +94,8 @@ conda-clean:
 
 .PHONY: monitor # create nohup with restart on failure
 monitor:
-	@if [ "$(filepath)" = "" ]; then echo "missing 'path' argument"; exit 1; fi
-	@bash -c '\
+	if [ "$(filepath)" = "" ]; then echo "missing 'path' argument"; exit 1; fi
+	bash -c '\
 		monitor() { \
 			while true; do \
 				if ! ps -p $$(cat "monitor-process.pid" 2>/dev/null) > /dev/null 2>&1; then \
@@ -153,5 +153,5 @@ up:
 
 .PHONY: help # generate help message
 help:
-	@echo "Usage: make [target]\n"
-	@grep '^.PHONY: .* #' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
+	echo "Usage: make [target]\n"
+	grep '^.PHONY: .* #' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
