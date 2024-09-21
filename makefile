@@ -90,11 +90,11 @@ conda-clean:
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
 	'
 
-# --------------------------------------------------------------- utils
+# --------------------------------------------------------------- nohup
 
 .PHONY: monitor # create nohup with restart on failure
 monitor:
-	if [ "$(filepath)" = "" ]; then echo "missing 'path' argument"; exit 1; fi
+	if [ "$(filepath)" = "" ]; then echo "missing 'filepath' argument"; exit 1; fi
 	bash -c '\
 		monitor() { \
 			while true; do \
@@ -125,6 +125,8 @@ monitor-kill:
 	-kill -9 $$(cat monitor-process.pid)
 	rm -rf monitor-process.pid
 	rm -rf monitor-process.log
+
+# --------------------------------------------------------------- utils
 
 .PHONY: fmt # format codebase
 fmt:
