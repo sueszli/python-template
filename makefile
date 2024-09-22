@@ -15,11 +15,12 @@ init:
 	
 	rm -rf .venv
 	python -m venv .venv
-	bash -c "source .venv/bin/activate && pip install -r requirements.txt"
+	$(PYTHON_PATH) -m pip install -r requirements.txt
+	echo "to activate venv, run: source .venv/bin/activate"
 
 .PHONY: lock # freeze pip and lock reqs
 lock:
-	bash -c "source .venv/bin/activate && pip freeze > requirements.in"
+	$(PYTHON_PATH) -m pip freeze > requirements.in
 	pip-compile requirements.in -o requirements.txt -vvv
 
 # --------------------------------------------------------------- docker
