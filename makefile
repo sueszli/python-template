@@ -53,7 +53,7 @@ docker-clean:
 
 # --------------------------------------------------------------- conda
 
-.PHONY: conda-req-to-yaml # generate environment.yml from requirements.txt (idempotent)
+.PHONY: reqs-to-yaml # generate environment.yml from requirements.txt (idempotent)
 conda-req-to-yaml:
 	./.venv/bin/python3 -m pip install pyyaml
 	./.venv/bin/python3 -c "import re, yaml; \
@@ -61,10 +61,10 @@ conda-req-to-yaml:
 	pattern = r'^(\S+)==(\S+)'; \
 	matches = re.findall(pattern, requirements_text, re.MULTILINE); \
 	requirements_dict = {name: version for name, version in matches}; \
-	conda_env = {'name': 'con', 'channels': ['defaults'], 'dependencies': [f'{package}={version}' for package, version in requirements_dict.items()]}; \
+	conda_env = {'name': 'con', 'channels': ['defaults'], 'dependencies': [f'{package}={version}' for package, version in requirements_dict.items()] + ['python=3.11']}; \
 	yaml.dump(conda_env, open('environment.yml', 'w'), sort_keys=False);"
 
-.PHONY: conda-gen-yaml # generate environment.yml from requirements.txt (idempotent)
+.PHONY: conda-gen-yaml # install conda to generate environment.yml from requirements.txt (idempotent)
 conda-gen-yaml:
 	conda update -n base -c defaults conda
 	# conda config --env --set subdir osx-64
