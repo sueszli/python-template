@@ -83,7 +83,6 @@ conda-req-to-yaml:
 	@echo "dependencies:" >> environment.yml
 	@echo "  - python=3.11" >> environment.yml
 	@sed 's/^/  - /' requirements.txt >> environment.yml
-	@echo "Environment file created as environment.yml"
 
 .PHONY: conda-install # install conda from env.yaml file
 conda-install:
