@@ -2,7 +2,7 @@ PYTHON_PATH := ./.venv/bin/python3
 
 # --------------------------------------------------------------- venv
 
-.PHONY: init # initialize venv
+.PHONY: init # initialize .venv
 init:
 	pip install pip --upgrade
 	pip install pipreqs
@@ -18,7 +18,7 @@ init:
 	$(PYTHON_PATH) -m pip install -r requirements.txt
 	echo "to activate venv, run: source .venv/bin/activate"
 
-.PHONY: lock # freeze pip and lock reqs
+.PHONY: lock # freeze and dump .venv
 lock:
 	$(PYTHON_PATH) -m pip freeze > requirements.in
 	pip-compile requirements.in -o requirements.txt -vvv
@@ -34,7 +34,7 @@ docker-install:
 docker-build:
 	docker-compose build
 
-.PHONY: docker-clean # wipe everything in docker
+.PHONY: docker-clean # wipe everything in all docker containers
 docker-clean:
 	docker-compose down
 
@@ -155,5 +155,5 @@ up:
 
 .PHONY: help # generate help message
 help:
-	echo "Usage: make [target]\n"
-	grep '^.PHONY: .* #' makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
+	@echo "Usage: make [target]\n"
+	@grep '^.PHONY: .* #' makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
