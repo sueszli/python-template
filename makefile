@@ -87,7 +87,8 @@ conda-gen-yaml:
 conda-install:
 	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
-		conda env create --file environment.yml; \
+		conda config --set channel_priority flexible; \
+		conda env create --file environment.yml --solver=libmamba; \
 	'
 
 .PHONY: conda-clean # wipe conda environment
