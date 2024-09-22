@@ -55,13 +55,13 @@ docker-clean:
 
 .PHONY: conda-req-to-yaml # generate environment.yml from requirements.txt (idempotent)
 conda-req-to-yaml:
-	@echo "name: myenv" > environment.yml
-	@echo "channels:" >> environment.yml
-	@echo "  - conda-forge" >> environment.yml
-	@echo "  - defaults" >> environment.yml
-	@echo "dependencies:" >> environment.yml
-	@echo "  - python=3.11" >> environment.yml
-	@sed 's/^/  - /' requirements.txt >> environment.yml
+	./.venv/bin/python3 -c "import re, yaml; \
+	requirements_text = open('requirements.txt').read(); \
+	pattern = r'^(\S+)==(\S+)'; \
+	matches = re.findall(pattern, requirements_text, re.MULTILINE); \
+	requirements_dict = {name: version for name, version in matches}; \
+	conda_env = {'name': 'my_environment', 'channels': ['defaults'], 'dependencies': [f'{package}={version}' for package, version in requirements_dict.items()]}; \
+	yaml.dump(conda_env, open('$(ENVIRONMENT_FILE)', 'w'), sort_keys=False);"
 
 .PHONY: conda-gen-yaml # generate environment.yml from requirements.txt (idempotent)
 conda-gen-yaml:
