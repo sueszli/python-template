@@ -156,4 +156,3 @@ up:
 help:
 	echo "Usage: make [target]\n"
 	grep '^.PHONY: .* #' makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
-
