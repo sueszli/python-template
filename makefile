@@ -55,8 +55,8 @@ docker-clean:
 
 # --------------------------------------------------------------- conda
 
-.PHONY: conda-get-yaml # convert requirements.txt to env.yaml file (idempotent)
-conda-get-yaml:
+.PHONY: conda-gen-yaml # generate env.yaml from requirements.txt (idempotent)
+conda-gen-yaml:
 	conda update -n base -c defaults conda
 	# conda config --env --set subdir osx-64
 	# conda config --env --set subdir osx-arm64
@@ -74,7 +74,7 @@ conda-get-yaml:
 		conda remove --yes --name con --all; \
 	'
 
-.PHONY: conda-req-to-yaml # convert requirements.txt to env.yaml file (idempotent)
+.PHONY: conda-req-to-yaml # generate env.yaml from requirements.txt (idempotent)
 conda-req-to-yaml:
 	@echo "name: myenv" > environment.yml
 	@echo "channels:" >> environment.yml
