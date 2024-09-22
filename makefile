@@ -61,7 +61,7 @@ conda-req-to-yaml:
 	matches = re.findall(pattern, requirements_text, re.MULTILINE); \
 	requirements_dict = {name: version for name, version in matches}; \
 	conda_env = {'name': 'my_environment', 'channels': ['defaults'], 'dependencies': [f'{package}={version}' for package, version in requirements_dict.items()]}; \
-	yaml.dump(conda_env, open('$(ENVIRONMENT_FILE)', 'w'), sort_keys=False);"
+	yaml.dump(conda_env, open('environment.yml', 'w'), sort_keys=False);"
 
 .PHONY: conda-gen-yaml # generate environment.yml from requirements.txt (idempotent)
 conda-gen-yaml:
