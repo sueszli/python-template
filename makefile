@@ -74,6 +74,17 @@ conda-get-yaml:
 		conda remove --yes --name con --all; \
 	'
 
+.PHONY: conda-req-to-yaml # convert requirements.txt to env.yaml file (idempotent)
+conda-req-to-yaml:
+	@echo "name: myenv" > environment.yml
+	@echo "channels:" >> environment.yml
+	@echo "  - conda-forge" >> environment.yml
+	@echo "  - defaults" >> environment.yml
+	@echo "dependencies:" >> environment.yml
+	@echo "  - python=3.11" >> environment.yml
+	@sed 's/^/  - /' requirements.txt >> environment.yml
+	@echo "Environment file created as environment.yml"
+
 .PHONY: conda-install # install conda from env.yaml file
 conda-install:
 	bash -c '\
