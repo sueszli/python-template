@@ -55,6 +55,16 @@ docker-clean:
 
 # --------------------------------------------------------------- conda
 
+.PHONY: conda-req-to-yaml # generate env.yaml from requirements.txt (idempotent)
+conda-req-to-yaml:
+	@echo "name: myenv" > environment.yml
+	@echo "channels:" >> environment.yml
+	@echo "  - conda-forge" >> environment.yml
+	@echo "  - defaults" >> environment.yml
+	@echo "dependencies:" >> environment.yml
+	@echo "  - python=3.11" >> environment.yml
+	@sed 's/^/  - /' requirements.txt >> environment.yml
+
 .PHONY: conda-gen-yaml # generate env.yaml from requirements.txt (idempotent)
 conda-gen-yaml:
 	conda update -n base -c defaults conda
@@ -73,16 +83,6 @@ conda-gen-yaml:
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
 		conda remove --yes --name con --all; \
 	'
-
-.PHONY: conda-req-to-yaml # generate env.yaml from requirements.txt (idempotent)
-conda-req-to-yaml:
-	@echo "name: myenv" > environment.yml
-	@echo "channels:" >> environment.yml
-	@echo "  - conda-forge" >> environment.yml
-	@echo "  - defaults" >> environment.yml
-	@echo "dependencies:" >> environment.yml
-	@echo "  - python=3.11" >> environment.yml
-	@sed 's/^/  - /' requirements.txt >> environment.yml
 
 .PHONY: conda-install # install conda from env.yaml file
 conda-install:
