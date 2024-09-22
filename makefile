@@ -55,6 +55,7 @@ docker-clean:
 
 .PHONY: conda-req-to-yaml # generate environment.yml from requirements.txt (idempotent)
 conda-req-to-yaml:
+	./.venv/bin/python3 -m pip install pyyaml
 	./.venv/bin/python3 -c "import re, yaml; \
 	requirements_text = open('requirements.txt').read(); \
 	pattern = r'^(\S+)==(\S+)'; \
