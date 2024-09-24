@@ -80,7 +80,7 @@ conda-install:
 
 .PHONY: conda-clean # wipe conda environment
 conda-clean:
-	# conda clean --all
+	# conda clean --all # wipe everything
 	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda remove --yes --name con --all; \
