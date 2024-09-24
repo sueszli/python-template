@@ -36,9 +36,9 @@ docker-build:
 docker-clean:
 	docker-compose down
 
-	-docker stop $$(docker ps -a -q)
-	-docker rm $$(docker ps -a -q)
-	-docker rmi $$(docker images -q)
+	docker stop $$(docker ps -a -q) || true
+	docker rm $$(docker ps -a -q) || true
+	docker rmi $$(docker images -q) || true
 	yes | docker container prune
 	yes | docker image prune
 	yes | docker volume prune
@@ -56,7 +56,7 @@ docker-clean:
 .PHONY: conda-reqs-to-yaml # install conda to generate environment.yml from requirements.txt (idempotent)
 conda-reqs-to-yaml:
 	conda update -n base -c defaults conda
-	conda config --env --set subdir osx-arm64 # x86_64 arch emulation
+	conda config --env --set subdir osx-arm64 # x86_64 arch emulation || true
 	conda config --set auto_activate_base false
 	conda info
 	bash -c '\
