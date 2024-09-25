@@ -18,7 +18,7 @@ init:
 
 .PHONY: lock # freeze and dump .venv
 lock:
-	$(PYTHON_PATH) -m pip freeze > requirements.in
+	./.venv/bin/python3 -m pip freeze > requirements.in
 	pip-compile requirements.in -o requirements.txt -vvv
 
 # --------------------------------------------------------------- docker
