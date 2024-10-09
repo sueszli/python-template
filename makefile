@@ -126,6 +126,18 @@ monitor-kill:
 	rm -rf monitor-process.pid
 	rm -rf monitor-process.log
 
+# --------------------------------------------------------------- rlang
+
+.PHONY: rmd-pdf # compile rmd to pdf
+rmd-pdf:
+	Rscript -e 'for(p in c("IRkernel")) if(!requireNamespace(p, quietly = TRUE)) install.packages(p, repos = "https://cran.rstudio.com")'
+	Rscript -e "IRkernel::installspec()"
+
+	Rscript -e 'for(p in c("rmarkdown", "ISLR")) if(!requireNamespace(p, quietly = TRUE)) install.packages(p, repos = "https://cran.rstudio.com")'
+	Rscript -e "rmarkdown::render('$(filepath)', output_format = 'pdf_document')"
+	
+	rm -rf *.bib *.aux *.log *.out *.synctex.gz
+
 # --------------------------------------------------------------- utils
 
 .PHONY: fmt # format codebase
