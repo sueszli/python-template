@@ -16,7 +16,7 @@ venv:
 	./.venv/bin/python3 -m pip install -r requirements.txt
 	@echo "to activate venv, run: source .venv/bin/activate"
 
-.PHONY: venv-freeze # freeze venv into requirements.txt
+.PHONY: venv-lock # freeze venv into requirements.txt
 venv-lock:
 	./.venv/bin/python3 -m pip freeze > requirements.in
 
