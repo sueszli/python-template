@@ -1,6 +1,6 @@
 # --------------------------------------------------------------- venv
 
-.PHONY: venv # infer dependencies from code, compile and install in venv
+.PHONY: venv # infer dependencies from code, initialize venv
 venv:
 	pip install pip --upgrade
 	pip install pipreqs
