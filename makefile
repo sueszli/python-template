@@ -135,6 +135,10 @@ rmd-to-pdf:
 	
 	rm -rf *.bib *.aux *.log *.out *.synctex.gz
 
+.PHONY: md-to-pdf # compile md to pdf
+md-to-pdf:
+	pandoc "$(filepath)" -o "$(basename $(filepath)).pdf"
+
 .PHONY: fmt # format codebase
 fmt:
 	./.venv/bin/python3 -m pip install isort
