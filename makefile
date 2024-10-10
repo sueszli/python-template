@@ -128,8 +128,8 @@ monitor-kill:
 
 # --------------------------------------------------------------- rlang
 
-.PHONY: rmd-pdf # compile rmd to pdf
-rmd-pdf:
+.PHONY: rmd-to-pdf # compile rmd to pdf
+rmd-to-pdf:
 	Rscript -e 'for(p in c("IRkernel")) if(!requireNamespace(p, quietly = TRUE)) install.packages(p, repos = "https://cran.rstudio.com")'
 	Rscript -e "IRkernel::installspec()"
 
