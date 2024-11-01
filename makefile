@@ -128,6 +128,15 @@ monitor-kill:
 
 # --------------------------------------------------------------- utils
 
+.PHONY: tex-to-pdf # compile tex to pdf
+tex-to-pdf:
+	# sudo tlmgr update --self
+	# sudo tlmgr install enumitem adjustbox tcolorbox tikzfill pdfcol listingsutf8
+	# sudo tlmgr install biblatex biber
+	pdflatex -interaction=nonstopmode "$(filepath)"
+	rm -f *.bib *.aux *.log *.out *.synctex.gz
+	# open -a "Google Chrome" "$(filepath)"
+
 .PHONY: rmd-to-pdf # compile rmd to pdf
 rmd-to-pdf:
 	Rscript -e 'for(p in c("rmarkdown", "ISLR", "IRkernel")) if(!requireNamespace(p, quietly = TRUE)) install.packages(p, repos = "https://cran.rstudio.com")'
@@ -147,14 +156,6 @@ fmt:
 	./.venv/bin/python3 -m isort .
 	./.venv/bin/python3 -m autoflake --remove-all-unused-imports --recursive --in-place .
 	./.venv/bin/python3 -m ruff format --config line-length=500 .
-
-.PHONY: sec # check for vulns
-sec:
-	./.venv/bin/python3 -m pip install bandit
-	./.venv/bin/python3 -m pip install safety
-	
-	./.venv/bin/python3 -m bandit -r .
-	./.venv/bin/python3 -m safety check --full-report
 
 .PHONY: up # pull and push changes
 up:
