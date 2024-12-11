@@ -1,10 +1,5 @@
-# for arm64 see:
-# - https://docs.docker.com/desktop/troubleshoot/known-issues/
-
-# for nvidia gpus see:
-# - https://github.com/IDEA-Research/Grounded-Segment-Anything/blob/main/Makefile
-# - https://github.com/NVIDIA/nvidia-container-toolkit?tab=readme-ov-file
-# - https://docs.docker.com/compose/gpu-support/
+# arm64: https://docs.docker.com/desktop/troubleshoot/known-issues/
+# nvidia gpus: https://docs.docker.com/compose/gpu-support/
 
 services:
   main:
