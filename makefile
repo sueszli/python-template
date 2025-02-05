@@ -1,4 +1,6 @@
-# --------------------------------------------------------------- venv
+# 
+# venv
+# 
 
 .PHONY: venv # infer dependencies from code, initialize venv
 venv:
@@ -24,7 +26,9 @@ venv-lock:
 in-lock:
 	pip-compile requirements.in -o requirements.txt -vvv
 
-# --------------------------------------------------------------- docker
+# 
+# docker
+# 
 
 .PHONY: docker-up # run docker container
 docker-up:
@@ -54,7 +58,9 @@ docker-clean:
 	docker volume ls
 	docker network ls
 
-# --------------------------------------------------------------- conda
+# 
+# conda
+# 
 
 .PHONY: conda-reqs-to-yaml # install conda to generate environment.yml from requirements.txt (idempotent)
 conda-reqs-to-yaml:
@@ -90,7 +96,9 @@ conda-clean:
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda deactivate; \
 	'
 
-# --------------------------------------------------------------- nohup
+# 
+# nohup
+# 
 
 .PHONY: monitor # create nohup with restart on failure
 monitor:
@@ -126,7 +134,9 @@ monitor-kill:
 	rm -rf monitor-process.pid
 	rm -rf monitor-process.log
 
-# --------------------------------------------------------------- utils
+# 
+# utils
+# 
 
 .PHONY: tex-to-pdf # compile tex to pdf
 tex-to-pdf:
