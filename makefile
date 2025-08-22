@@ -18,12 +18,9 @@ venv:
 	./.venv/bin/python3 -m pip install -r requirements.txt
 	@echo "to activate venv, run: source .venv/bin/activate"
 
-.PHONY: venv-lock # freeze venv into requirements.txt
-venv-lock:
+.PHONY: lock # freeze venv into requirements.txt
+lock:
 	./.venv/bin/python3 -m pip freeze > requirements.in
-
-.PHONY: in-lock # compile requirements.in
-in-lock:
 	pip-compile requirements.in -o requirements.txt -vvv
 
 # 
@@ -41,22 +38,8 @@ docker-build:
 
 .PHONY: docker-clean # wipe everything in all docker containers
 docker-clean:
-	docker compose down
-
-	docker stop $$(docker ps -a -q) || true
-	docker rm $$(docker ps -a -q) || true
-	docker rmi $$(docker images -q) || true
-	yes | docker container prune
-	yes | docker image prune
-	yes | docker volume prune
-	yes | docker network prune
-	yes | docker system prune
-	
-	docker ps --all
-	docker images
-	docker system df
-	docker volume ls
-	docker network ls
+	docker compose down --rmi all --volumes --remove-orphans
+	docker system prune -a -f
 
 # 
 # conda
@@ -166,13 +149,6 @@ fmt:
 	./.venv/bin/python3 -m isort .
 	./.venv/bin/python3 -m autoflake --remove-all-unused-imports --recursive --in-place .
 	./.venv/bin/python3 -m ruff format --config line-length=5000 .
-
-.PHONY: up # pull and push changes
-up:
-	git pull
-	git add .
-	if [ -z "$(msg)" ]; then git commit -m "up"; else git commit -m "$(msg)"; fi
-	git push
 
 .PHONY: help # generate help message
 help:
