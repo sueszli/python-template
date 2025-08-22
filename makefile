@@ -2,7 +2,7 @@
 # venv
 # 
 
-.PHONY: venv # infer dependencies from code, initialize venv
+.PHONY: venv # create virtual environment
 venv:
 	pip install pip --upgrade
 	pip install pipreqs
@@ -12,13 +12,13 @@ venv:
 
 	pip install pip-tools
 	pip-compile requirements.in -o requirements.txt -vvv
-	
+
 	rm -rf .venv
 	python -m venv .venv
 	./.venv/bin/python3 -m pip install -r requirements.txt
-	@echo "to activate venv, run: source .venv/bin/activate"
+	@echo "activate venv with: \033[1;33msource .venv/bin/activate\033[0m"
 
-.PHONY: lock # freeze venv into requirements.txt
+.PHONY: lock # freeze dependencies
 lock:
 	./.venv/bin/python3 -m pip freeze > requirements.in
 	pip-compile requirements.in -o requirements.txt -vvv
@@ -27,17 +27,21 @@ lock:
 # docker
 # 
 
-.PHONY: docker-up # run docker container
-docker-up:
-	docker compose up --detach
-	@echo "to exec into docker container, run: docker exec -it main bash"
+.PHONY: docker # run or rebuild docker container
+docker:
+	@if docker compose ps --services --filter "status=running" | grep -q .; then \
+		echo "rebuilding..."; \
+		docker compose build; \
+	else \
+		echo "starting container..."; \
+		docker compose up --detach; \
+	fi
 
-.PHONY: docker-build # save changes to container
-docker-build:
-	docker compose build
+.PHONY: clean # wipe venv and all containers
+clean:
+	rm -rf ./.venv
+	rm -rf ./.ruff_cache
 
-.PHONY: docker-clean # wipe everything in all docker containers
-docker-clean:
 	docker compose down --rmi all --volumes --remove-orphans
 	docker system prune -a -f
 
@@ -80,8 +84,18 @@ conda-clean:
 	'
 
 # 
-# nohup
+# utils
 # 
+
+.PHONY: fmt # format code
+fmt:
+	./.venv/bin/python3 -m pip install isort
+	./.venv/bin/python3 -m pip install ruff
+	./.venv/bin/python3 -m pip install autoflake
+
+	./.venv/bin/python3 -m isort .
+	./.venv/bin/python3 -m autoflake --remove-all-unused-imports --recursive --in-place .
+	./.venv/bin/python3 -m ruff format --config line-length=5000 .
 
 .PHONY: monitor # create nohup with restart on failure
 monitor:
@@ -117,10 +131,6 @@ monitor-kill:
 	rm -rf monitor-process.pid
 	rm -rf monitor-process.log
 
-# 
-# utils
-# 
-
 .PHONY: tex-to-pdf # compile tex to pdf
 tex-to-pdf:
 	# sudo tlmgr update --self
@@ -139,16 +149,6 @@ rmd-to-pdf:
 .PHONY: md-to-pdf # compile md to pdf
 md-to-pdf:
 	pandoc "$(filepath)" -o "$(basename $(filepath)).pdf"
-
-.PHONY: fmt # format codebase
-fmt:
-	./.venv/bin/python3 -m pip install isort
-	./.venv/bin/python3 -m pip install ruff
-	./.venv/bin/python3 -m pip install autoflake
-
-	./.venv/bin/python3 -m isort .
-	./.venv/bin/python3 -m autoflake --remove-all-unused-imports --recursive --in-place .
-	./.venv/bin/python3 -m ruff format --config line-length=5000 .
 
 .PHONY: help # generate help message
 help:
