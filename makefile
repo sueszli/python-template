@@ -14,7 +14,7 @@ venv:
 	pip-compile requirements.in -o requirements.txt -vvv
 
 	rm -rf .venv
-	python -m venv .venv
+	python3.11 -m venv .venv
 	./.venv/bin/python3 -m pip install -r requirements.txt
 	@echo "activate venv with: \033[1;33msource .venv/bin/activate\033[0m"
 
@@ -37,11 +37,8 @@ docker:
 		docker compose up --detach; \
 	fi
 
-.PHONY: clean # wipe venv and all containers
+.PHONY: clean # wipe all containers
 clean:
-	rm -rf ./.venv
-	rm -rf ./.ruff_cache
-
 	docker compose down --rmi all --volumes --remove-orphans
 	docker system prune -a -f
 
