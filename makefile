@@ -17,7 +17,7 @@ venv:
 .PHONY: lock # freeze dependencies
 lock:
 	./.venv/bin/python3 -m pip freeze > requirements.in
-	pip-compile requirements.in -o requirements.txt -vvv
+	uvx --from pip-tools pip-compile requirements.in -o requirements.txt -vvv
 
 # 
 # docker
