@@ -86,13 +86,9 @@ conda-clean:
 
 .PHONY: fmt # format code
 fmt:
-	./.venv/bin/python3 -m pip install isort
-	./.venv/bin/python3 -m pip install ruff
-	./.venv/bin/python3 -m pip install autoflake
-
-	./.venv/bin/python3 -m isort .
-	./.venv/bin/python3 -m autoflake --remove-all-unused-imports --recursive --in-place .
-	./.venv/bin/python3 -m ruff format --config line-length=5000 .
+	uvx isort .
+	uvx autoflake --remove-all-unused-imports --recursive --in-place .
+	uvx ruff format --config line-length=5000 .
 
 .PHONY: monitor # create nohup with restart on failure
 monitor:
