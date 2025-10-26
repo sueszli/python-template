@@ -4,7 +4,6 @@
 
 .PHONY: venv # create virtual environment
 venv:
-	pip install pip --upgrade
 	rm -rf requirements.txt requirements.in .venv
 	uvx pipreqs . --mode no-pin --encoding utf-8 --ignore .venv
 	mv requirements.txt requirements.in
