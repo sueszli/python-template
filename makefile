@@ -8,16 +8,16 @@ venv:
 	rm -rf requirements.txt requirements.in .venv
 	uvx pipreqs . --mode no-pin --encoding utf-8 --ignore .venv
 	mv requirements.txt requirements.in
-	uvx --from pip-tools pip-compile requirements.in -o requirements.txt -vvv
+	uv pip compile requirements.in -o requirements.txt
 
-	python3.11 -m venv .venv
-	./.venv/bin/python3 -m pip install -r requirements.txt
+	uv venv .venv --python 3.11
+	uv pip install -r requirements.txt
 	@echo "activate venv with: \033[1;33msource .venv/bin/activate\033[0m"
 
 .PHONY: lock # freeze dependencies
 lock:
 	./.venv/bin/python3 -m pip freeze > requirements.in
-	uvx --from pip-tools pip-compile requirements.in -o requirements.txt -vvv
+	uv pip compile requirements.in -o requirements.txt
 
 # 
 # docker
@@ -85,49 +85,6 @@ fmt:
 	uvx isort .
 	uvx autoflake --remove-all-unused-imports --recursive --in-place .
 	uvx ruff format --config line-length=5000 .
-
-.PHONY: monitor # create nohup with restart on failure
-monitor:
-	if [ "$(filepath)" = "" ]; then echo "missing 'filepath' argument"; exit 1; fi
-	bash -c '\
-		monitor() { \
-			while true; do \
-				if ! ps -p $$(cat "monitor-process.pid" 2>/dev/null) > /dev/null 2>&1; then \
-					echo "$$(date): process not running or died, (re)starting..." >> monitor.log; \
-					nohup python "$(filepath)" > "monitor-process.log" 2>&1 & \
-					echo $$! > "monitor-process.pid"; \
-					echo "$$(date): started process with PID $$(cat monitor-process.pid)" >> monitor.log; \
-				fi; \
-				sleep 5; \
-			done; \
-		}; \
-		monitor >> "monitor.log" 2>&1 & \
-		echo $$! > "monitor.pid"; \
-		echo "$$(date): monitor started" >> "monitor.log"; \
-	'
-
-.PHONY: monitor-watch # tail log of nohup process
-monitor-watch:
-	while true; do clear; tail -n 100 monitor-process.log; sleep 0.1; done
-	# watch -n 0.1 "tail -n 100 monitor-process.log"
-
-.PHONY: monitor-kill # kill nohup process
-monitor-kill:
-	kill -9 $$(cat monitor.pid) || true
-	rm -rf monitor.pid
-	rm -rf monitor.log
-	kill -9 $$(cat monitor-process.pid) || true
-	rm -rf monitor-process.pid
-	rm -rf monitor-process.log
-
-.PHONY: tex-to-pdf # compile tex to pdf
-tex-to-pdf:
-	# sudo tlmgr update --self
-	# sudo tlmgr install enumitem adjustbox tcolorbox tikzfill pdfcol listingsutf8
-	# sudo tlmgr install biblatex biber
-	pdflatex -interaction=nonstopmode "$(filepath)"
-	rm -f *.bib *.aux *.log *.out *.synctex.gz
-	# open -a "Google Chrome" "$(filepath)"
 
 .PHONY: rmd-to-pdf # compile rmd to pdf
 rmd-to-pdf:
