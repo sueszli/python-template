@@ -2,7 +2,8 @@
 # venv
 # 
 
-.PHONY: venv # create virtual environment
+# init venv from imports
+.PHONY: venv
 venv:
 	pip install pip --upgrade
 	rm -rf requirements.txt requirements.in .venv
@@ -11,42 +12,39 @@ venv:
 	uv pip install -r requirements.txt
 	@echo "activate venv with: \033[1;33msource .venv/bin/activate\033[0m"
 
-.PHONY: lock # freeze dependencies
+# dump + compile dependencies
+.PHONY: lock
 lock:
 	uv pip freeze > requirements.in
 	uv pip compile requirements.in -o requirements.txt
-
-.PHONY: fmt # format code
-fmt:
-	uvx isort .
-	uvx autoflake --remove-all-unused-imports --recursive --in-place .
-	uvx ruff format --config line-length=5000 .
 
 # 
 # docker
 # 
 
-.PHONY: docker # run or rebuild docker container
-docker:
-	@if docker compose ps --services --filter "status=running" | grep -q .; then \
-		echo "rebuilding..."; \
-		docker compose build; \
-	else \
-		echo "starting container..."; \
-		docker compose up --detach; \
-	fi
+DOCKER_RUN = docker run --rm -p 9090:9090 -v $(PWD):/workspace main sh -c
 
-.PHONY: clean # wipe all containers
-clean:
-	docker compose down --rmi all --volumes --remove-orphans
-	docker system prune -a -f
+.PHONY: docker-build
+docker-build:
+	docker build -t main .
+ 
+.PHONY: docker-run
+docker-run:
+	$(DOCKER_RUN) "python3 /workspace/src/mnist.py"
+
+.PHONY: docker-clean
+docker-clean:
+	# docker compose down --rmi all --volumes --remove-orphans
+	# docker system prune -a -f
+	docker rmi -f main:latest
 
 # 
 # conda
 # 
 
-.PHONY: conda-reqs-to-yaml # install conda to generate environment.yml from requirements.txt (idempotent)
-conda-reqs-to-yaml:
+# generate environment.yml from requirements.txt (idempotent)
+.PHONY: reqs-to-yaml
+reqs-to-yaml:
 	conda update -n base -c defaults conda
 	conda config --env --set subdir osx-arm64 || true
 	conda config --set auto_activate_base false
@@ -61,18 +59,18 @@ conda-reqs-to-yaml:
 		conda remove --yes --name con --all; \
 	'
 
-.PHONY: conda # install conda from environment.yml file
+# init conda from environment.yml file
+.PHONY: conda
 conda:
-	# can also be used in docker with continuumio/miniconda3 image
 	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda env create --file environment.yml --solver=libmamba; \
 	'
-	@echo "to activate conda environment, run: conda activate con"
+	@echo "activate conda with: \033[1;33mconda activate con\033[0m"
 
-.PHONY: conda-clean # wipe conda environment
+.PHONY: conda-clean
 conda-clean:
-	# conda clean --all # wipe everything
+	# conda clean --all
 	bash -c '\
 		source $$(conda info --base)/etc/profile.d/conda.sh; conda activate base; \
 		conda remove --yes --name con --all; \
@@ -83,23 +81,18 @@ conda-clean:
 # utils
 # 
 
-.PHONY: fmt # format code
+.PHONY: fmt
 fmt:
 	uvx isort .
 	uvx autoflake --remove-all-unused-imports --recursive --in-place .
-	uvx ruff format --config line-length=5000 .
+	uvx black --line-length 5000 .
 
-.PHONY: rmd-to-pdf # compile rmd to pdf
+.PHONY: md-to-pdf
+md-to-pdf:
+	pandoc "$(filepath)" -o "$(basename $(filepath)).pdf"
+
+.PHONY: rmd-to-pdf
 rmd-to-pdf:
 	Rscript -e 'for(p in c("rmarkdown", "ISLR", "IRkernel")) if(!requireNamespace(p, quietly = TRUE)) install.packages(p, repos = "https://cran.rstudio.com")'
 	Rscript -e "rmarkdown::render('$(filepath)', output_format = 'pdf_document')"
 	rm -rf *.bib *.aux *.log *.out *.synctex.gz
-
-.PHONY: md-to-pdf # compile md to pdf
-md-to-pdf:
-	pandoc "$(filepath)" -o "$(basename $(filepath)).pdf"
-
-.PHONY: help # generate help message
-help:
-	@echo "Usage: make [target]\n"
-	@grep '^.PHONY: .* #' makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1	\2/' | expand -t20
