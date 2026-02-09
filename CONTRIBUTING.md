@@ -1,6 +1,6 @@
 # Code Style
 
-We aim to follow these rules for all changes in this repository:
+Follow these rules for all changes in this repository:
 
 - Match existing code style and architectural patterns.
 - Zero Technical Debt: Fix issues immediately. Never rely on future refactoring.
@@ -12,16 +12,3 @@ We aim to follow these rules for all changes in this repository:
 - Centralize Control Flow: Branching logic belongs in parents. Leaf functions should be pure logic.
 - Fail Fast: Detect unexpected conditions immediately. Raise Exceptions rather than corrupt state.
 - [Ask for forgiveness not permission](https://docs.python.org/3/glossary.html#term-eafp): Assume valid keys or attributes exist and catch exceptions if the assumption proves false. Use try-except blocks:
-
-  ```python
-  # Good
-  try:
-      return mapping[key]
-  except KeyError:
-      return default_value
-
-  # Bad
-  if key in mapping:
-      return mapping[key]
-  return default_value
-  ```
