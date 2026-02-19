@@ -79,11 +79,12 @@ conda-clean:
 # utils
 # 
 
-.PHONY: fmt
-fmt:
+.PHONY: precommit
+precommit:
 	uvx isort .
 	uvx autoflake --remove-all-unused-imports --recursive --in-place .
 	uvx black --line-length 5000 .
+	uvx ruff check --fix .
 
 .PHONY: md-to-pdf
 md-to-pdf:
